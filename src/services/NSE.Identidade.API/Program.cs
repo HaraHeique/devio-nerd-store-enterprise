@@ -1,35 +1,64 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NSE.Identidade.API.Data;
+
 namespace NSE.Identidade.API
 {
+    #pragma warning disable
     public class Program
     {
+        private static WebApplicationBuilder _builder;
+        private static WebApplication _app;
+
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            // ConfigureServices (Add services to the container)
+            _builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            ConfigureServices();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            // Configure (Configure the HTTP request pipeline)
+            _app = _builder.Build();
 
-            var app = builder.Build();
+            ConfigureRequestsPipeline();
+        }
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+        private static void ConfigureServices()
+        {
+            IServiceCollection services = _builder.Services;
+            IConfiguration configuration = _builder.Configuration;
+
+            services.AddDbContext<ApplicationDbContext>(
+                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")
+            ));
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddControllers();
+
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+        }
+
+        private static void ConfigureRequestsPipeline()
+        {
+            if (_app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                _app.UseSwagger();
+                _app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            _app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            _app.UseAuthentication();
+            _app.UseAuthorization();
 
+            _app.MapControllers();
 
-            app.MapControllers();
-
-            app.Run();
+            _app.Run();
         }
     }
 }
