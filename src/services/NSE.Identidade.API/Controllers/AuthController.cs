@@ -11,7 +11,7 @@ namespace NSE.Identidade.API.Controllers
 {
     [ApiController]
     [Route("api/identidade")]
-    public class AuthController : ControllerBase
+    public class AuthController : MainController
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -30,7 +30,7 @@ namespace NSE.Identidade.API.Controllers
         [HttpPost("nova-conta")]
         public async Task<IActionResult> Registrar(UsuarioRegistroViewModel usuarioRegistro)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var usuario = new IdentityUser
             {
@@ -43,28 +43,30 @@ namespace NSE.Identidade.API.Controllers
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(usuario, false);
                 var respotaLoginVM = await GerarJwt(usuario.Email);
-                return Ok(respotaLoginVM);
+                return CustomResponse(respotaLoginVM);
             }
 
-            return BadRequest();
+            return CustomErrorResponse(result.Errors.Select(e => e.Description).ToArray());
         }
 
         [HttpPost("autenticar")]
         public async Task<IActionResult> Login(UsuarioLoginViewModel usuarioLogin)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha, isPersistent: false, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
                 var respotaLoginVM = await GerarJwt(usuarioLogin.Email);
-                return Ok(respotaLoginVM);
+                return CustomResponse(respotaLoginVM);
             }
 
-            return BadRequest("Usuário inválido");
+            if (result.IsLockedOut)
+                return CustomErrorResponse("Usuário temporiariamente bloqueado por ter feito várias tentativas de entrada inválidas!");
+
+            return CustomErrorResponse("Usuário ou senha inválidos.");
         }
 
         private async Task<UsuarioRespostaLoginViewModel> GerarJwt(string email)
