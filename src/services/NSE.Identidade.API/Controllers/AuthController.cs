@@ -72,10 +72,17 @@ namespace NSE.Identidade.API.Controllers
         private async Task<UsuarioRespostaLoginViewModel> GerarJwt(string email)
         {
             // TODO Fazer uma refatoração depois colocando em um service com método independentes
-
-            // Parte que obtém as claims
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
+
+            var identityClaims = await ObterClaimsUsuario(claims, user);
+            string encodedToken = CodificarToken(identityClaims);
+
+            return ObterRespostaToken(user, claims, encodedToken);
+        }
+
+        private async Task<ClaimsIdentity> ObterClaimsUsuario(IList<Claim> claims, IdentityUser user)
+        {
             var userRoles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
@@ -85,10 +92,24 @@ namespace NSE.Identidade.API.Controllers
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
             AdicionarRolesComoClaims(claims, userRoles);
 
-            // Parte que gera o token
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);
 
+            return identityClaims;
+
+
+            static long ToUnixEpochDate(DateTime date)
+                => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+
+            static void AdicionarRolesComoClaims(IList<Claim> claims, IList<string> roles)
+            {
+                foreach (string userRole in roles)
+                    claims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+        }
+
+        private string CodificarToken(ClaimsIdentity identityClaims)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 
@@ -103,7 +124,11 @@ namespace NSE.Identidade.API.Controllers
 
             string encodedToken = tokenHandler.WriteToken(token);
 
-            // Parte que gera a respota do objeto retornado para o client com o token junto
+            return encodedToken;
+        }
+
+        private UsuarioRespostaLoginViewModel ObterRespostaToken(IdentityUser user, IList<Claim> claims, string encodedToken)
+        {
             return new UsuarioRespostaLoginViewModel
             {
                 AccessToken = encodedToken,
@@ -119,15 +144,6 @@ namespace NSE.Identidade.API.Controllers
                     })
                 }
             };
-
-            static long ToUnixEpochDate(DateTime date) 
-                => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
-
-            static void AdicionarRolesComoClaims(IList<Claim> claims, IList<string> roles) 
-            {
-                foreach (string userRole in roles)
-                    claims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
         }
     }
 }
