@@ -69,3 +69,10 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+input,
+select,
+file,
+textarea {
+    max-width: 400px;
+}

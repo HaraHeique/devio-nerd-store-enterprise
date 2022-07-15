@@ -3041,7 +3041,7 @@ input[type="button"].btn-block {
 
 .dropdown-toggle::after {
   display: inline-block;
-  margin-left: 0.255em;
+  margin-left: 0.5em;
   vertical-align: 0.255em;
   content: "";
   border-top: 0.3em solid;
@@ -3063,7 +3063,7 @@ input[type="button"].btn-block {
   float: left;
   min-width: 10rem;
   padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
+  margin: 21px 0 0;
   font-size: 1rem;
   color: #212529;
   text-align: left;
@@ -3080,7 +3080,7 @@ input[type="button"].btn-block {
 }
 
 .dropdown-menu-right {
-  right: 0;
+  right: 100px;
   left: auto;
 }
 
