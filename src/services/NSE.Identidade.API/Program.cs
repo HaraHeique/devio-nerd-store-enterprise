@@ -1,8 +1,8 @@
 using NSE.Identidade.API.Configurations;
 
+#pragma warning disable
 namespace NSE.Identidade.API
 {
-    #pragma warning disable
     public class Program
     {
         private static WebApplicationBuilder _builder;
@@ -33,8 +33,6 @@ namespace NSE.Identidade.API
 
         private static void ConfigureRequestsPipeline()
         {
-            _app.UseIdentityConfiguration();
-
             _app.UseApiConfiguration();
 
             _app.UseSwaggerConfiguration();

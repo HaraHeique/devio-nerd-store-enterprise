@@ -17,6 +17,10 @@
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseIdentityConfiguration();
+
             app.MapControllers();
 
             return app;
