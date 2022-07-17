@@ -1,4 +1,6 @@
-﻿namespace NSE.Catalogo.API.Configurations
+﻿using NSE.WebAPI.Core.Identidade;
+
+namespace NSE.Catalogo.API.Configurations
 {
     public static class ApiConfig
     {
@@ -30,6 +32,8 @@
             app.UseRouting();
 
             app.UseCors("AcessoTotal");
+
+            app.UseAuthConfiguration();
 
             app.MapControllers();
 

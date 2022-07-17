@@ -1,4 +1,5 @@
 using NSE.Catalogo.API.Configurations;
+using NSE.WebAPI.Core.Identidade;
 
 #pragma warning disable
 namespace NSE.Catalogo.API
@@ -24,9 +25,9 @@ namespace NSE.Catalogo.API
 
         private static void ConfigureServices()
         {
-            //_builder.AddIdentityConfiguration();
-
             _builder.AddApiConfiguration();
+
+            _builder.AddJwtConfiguration();
 
             _builder.AddSwaggerConfiguration();
 
