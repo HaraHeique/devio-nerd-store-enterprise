@@ -18,7 +18,7 @@ namespace NSE.WebApp.MVC
 
             services.AddMvcConfiguration(Configuration);
 
-            services.RegisterDependencies();
+            services.RegisterDependencies(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
