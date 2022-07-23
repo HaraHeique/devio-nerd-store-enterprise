@@ -39,7 +39,7 @@ namespace NSE.WebApp.MVC.Extensions
                 return;
             }
 
-            context.Response.StatusCode = (int)httpRequestException.StatusCode;
+            context.Response.StatusCode = (int)statusCode;
         }
     }
 }
