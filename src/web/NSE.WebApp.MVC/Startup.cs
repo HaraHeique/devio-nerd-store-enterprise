@@ -24,6 +24,8 @@ namespace NSE.WebApp.MVC
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMvcConfiguration(env);
+
+            app.UseGlobalizationConfig();
         }
     }
 }
