@@ -15,7 +15,9 @@ namespace NSE.WebApp.MVC.Configuration
 
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>();
             services.AddHttpClient<ICatalogoService, CatalogoService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
