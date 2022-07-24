@@ -1,4 +1,4 @@
-﻿namespace NSE.WebApp.MVC.Models.Options
+﻿namespace NSE.WebApp.MVC.Options
 {
     public class AppSettings
     {

@@ -1,4 +1,4 @@
-﻿using NSE.WebApp.MVC.Models.ViewModels.Usuario;
+﻿using NSE.WebApp.MVC.Models.Usuario;
 using System.Threading.Tasks;
 
 namespace NSE.WebApp.MVC.Services.Interfaces

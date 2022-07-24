@@ -1,4 +1,4 @@
-﻿using NSE.WebApp.MVC.Models.ViewModels;
+﻿using NSE.WebApp.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

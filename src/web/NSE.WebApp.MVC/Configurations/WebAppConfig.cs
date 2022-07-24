@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NSE.WebApp.MVC.Extensions;
-using NSE.WebApp.MVC.Models.Options;
+using NSE.WebApp.MVC.Middlewares;
+using NSE.WebApp.MVC.Options;
 
-namespace NSE.WebApp.MVC.Configuration
+namespace NSE.WebApp.MVC.Configurations
 {
     public static class WebAppConfig
     {

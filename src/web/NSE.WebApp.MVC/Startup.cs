@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSE.WebApp.MVC.Configuration;
+using NSE.WebApp.MVC.Configurations;
 
 namespace NSE.WebApp.MVC
 {
@@ -25,7 +25,7 @@ namespace NSE.WebApp.MVC
         {
             app.UseMvcConfiguration(env);
 
-            app.UseGlobalizationConfig();
+            app.UseGlobalizationConfiguration();
         }
     }
 }

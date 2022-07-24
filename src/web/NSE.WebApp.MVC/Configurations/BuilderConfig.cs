@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace NSE.WebApp.MVC.Configuration
+namespace NSE.WebApp.MVC.Configurations
 {
     public static class BuilderConfig
     {

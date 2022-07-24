@@ -10,7 +10,7 @@ namespace NSE.WebApp.MVC.Extensions
         public static string MensagemEstoque(this RazorPage page, int quantidade) 
             => quantidade > 0 ? $"Apenas {quantidade} em estoque!" : "Produto esgotado!";
         
-        public static string FormatarMoeda(this RazorPage page, decimal valor) 
+        public static string FormatoMoeda(this RazorPage page, decimal valor) 
             => valor > 0 ? string.Format(Thread.CurrentThread.CurrentCulture, "{0:C}", valor) : "Gratuito";
 
         // para criar seu avatar publicamente use: https://br.gravatar.com/

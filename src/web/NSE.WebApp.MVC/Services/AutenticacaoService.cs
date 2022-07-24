@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using NSE.WebApp.MVC.Models.Options;
-using NSE.WebApp.MVC.Models.ViewModels;
-using NSE.WebApp.MVC.Models.ViewModels.Usuario;
+using NSE.WebApp.MVC.Models;
+using NSE.WebApp.MVC.Models.Usuario;
+using NSE.WebApp.MVC.Options;
 using NSE.WebApp.MVC.Services.Interfaces;
 using System;
 using System.Net.Http;

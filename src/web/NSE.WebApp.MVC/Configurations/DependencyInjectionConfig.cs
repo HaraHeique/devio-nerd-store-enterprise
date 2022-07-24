@@ -5,7 +5,7 @@ using NSE.WebApp.MVC.Services;
 using NSE.WebApp.MVC.Services.Handlers;
 using NSE.WebApp.MVC.Services.Interfaces;
 
-namespace NSE.WebApp.MVC.Configuration
+namespace NSE.WebApp.MVC.Configurations
 {
     public static class DependencyInjectionConfig
     {

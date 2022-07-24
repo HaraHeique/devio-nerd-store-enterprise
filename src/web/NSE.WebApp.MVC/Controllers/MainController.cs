@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NSE.WebApp.MVC.Models.ViewModels;
+using NSE.WebApp.MVC.Models;
 using System.Collections.Generic;
 using System.Linq;
 

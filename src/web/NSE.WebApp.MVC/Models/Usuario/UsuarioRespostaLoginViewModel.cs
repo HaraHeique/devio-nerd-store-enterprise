@@ -1,7 +1,6 @@
-﻿using NSE.WebApp.MVC.Models.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace NSE.WebApp.MVC.Models.ViewModels.Usuario
+namespace NSE.WebApp.MVC.Models.Usuario
 {
     public class UsuarioRespostaLoginViewModel
     {

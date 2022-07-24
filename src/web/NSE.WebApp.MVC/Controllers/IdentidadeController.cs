@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using NSE.WebApp.MVC.Models.ViewModels.Usuario;
+using NSE.WebApp.MVC.Models.Usuario;
 using NSE.WebApp.MVC.Services.Interfaces;
 using System;
 using System.Collections.Generic;

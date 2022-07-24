@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 
-namespace NSE.WebApp.MVC.Configuration
+namespace NSE.WebApp.MVC.Configurations
 {
     public static class GlobalizationConfig
     {
-        public static IApplicationBuilder UseGlobalizationConfig(this IApplicationBuilder app)
+        public static IApplicationBuilder UseGlobalizationConfiguration(this IApplicationBuilder app)
         {
             var supportedCultures = new[]
-            { 
-                new CultureInfo("pt-BR") 
+            {
+                new CultureInfo("pt-BR")
             };
 
             var localizationOptions = new RequestLocalizationOptions
