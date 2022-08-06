@@ -1,9 +1,16 @@
-﻿namespace NSE.Core.DomainObjects
+﻿using NSE.Core.Messages;
+
+namespace NSE.Core.DomainObjects
 {
     public abstract class Entity
     {
+        private List<Event> _notificacoes;
+
         public Guid Id { get; set; }
 
+        public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
+
+        // Comparações
         public bool IsTransient() => Id == default;
 
         public override bool Equals(object obj)
@@ -38,5 +45,16 @@
         }
 
         public static bool operator !=(Entity left, Entity right) => !(left == right);
+
+        // Eventos
+        public void AdicionarEvento(Event evento)
+        {
+            _notificacoes ??= new List<Event>();
+            _notificacoes.Add(evento);
+        }
+
+        public void RemoverEvento(Event evento) => _notificacoes?.Remove(evento);
+
+        public void LimparEventos() => _notificacoes?.Clear();
     }
 }

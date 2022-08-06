@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NSE.Catalogo.API.Models;
 using NSE.Core.Data;
+using NSE.Core.Messages;
 
 #nullable disable
 namespace NSE.Catalogo.API.Data
@@ -14,6 +16,7 @@ namespace NSE.Catalogo.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            SetDefaultIgnoreModels(modelBuilder);
             SetDefaultModelColumnsType(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
 
@@ -32,6 +35,12 @@ namespace NSE.Catalogo.API.Data
                 IEnumerable<IMutableProperty> decimalColumnsType = GetAllPropertiesByType(modelBuilder, typeof(decimal));
 
                 foreach (var property in decimalColumnsType) property.SetColumnType("decimal(18,2)");
+            }
+
+            void SetDefaultIgnoreModels(ModelBuilder modelBuilder)
+            {
+                modelBuilder.Ignore<ValidationResult>();
+                modelBuilder.Ignore<Event>();
             }
 
             IEnumerable<IMutableProperty> GetAllPropertiesByType(ModelBuilder modelBuilder, Type type)

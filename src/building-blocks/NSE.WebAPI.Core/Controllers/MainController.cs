@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NSE.Identidade.API.Controllers
+namespace NSE.WebAPI.Core.Controllers
 {
     [ApiController]
     public abstract class MainController : ControllerBase
     {
         private readonly List<string> Erros = new();
 
-        protected ActionResult CustomResponse(object result = null)
+        protected ActionResult CustomResponse(object? result = null)
         {
             if (OperacaoValida()) return Ok(result);
 
@@ -29,6 +30,13 @@ namespace NSE.Identidade.API.Controllers
                 string message = error.Exception == null ? error.ErrorMessage : error.Exception.Message;
                 Erros.Add(message);
             }
+
+            return CustomResponse();
+        }
+
+        protected ActionResult CustomResponse(ValidationResult validationResult)
+        {
+            AdicionarErros(validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
 
             return CustomResponse();
         }
