@@ -12,7 +12,8 @@ namespace NSE.WebApp.MVC.Configurations
     {
         public static IServiceCollection AddMvcConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
 
             services.Configure<AppSettings>(configuration);
 
