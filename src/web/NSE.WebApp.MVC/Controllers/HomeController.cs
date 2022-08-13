@@ -5,9 +5,9 @@ namespace NSE.WebApp.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index() => View();
+        //public IActionResult Index() => View();
 
-        public IActionResult Privacy() => View();
+        //public IActionResult Privacy() => View();
 
         [Route("erro/{id:length(3,3)}")]
         public IActionResult Error(int id)
