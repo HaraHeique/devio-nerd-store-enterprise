@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NSE.Core.Messages.Integration;
 using NSE.Identidade.API.Models;
+using NSE.Infra.MessageBus;
 using NSE.WebAPI.Core.Controllers;
 using NSE.WebAPI.Core.Identidade;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,18 +17,21 @@ namespace NSE.Identidade.API.Controllers
     [Route("api/identidade")]
     public class AuthController : MainController
     {
+        private readonly AppSettings _appSettings;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly AppSettings _appSettings;
+        private readonly IMessageBus _bus;
 
         public AuthController(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, 
-            IOptions<AppSettings> appSettings)
+            SignInManager<IdentityUser> signInManager,
+            IOptions<AppSettings> appSettings,
+            IMessageBus bus)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
+            _bus = bus;
         }
 
         [HttpPost("nova-conta")]
@@ -45,6 +50,14 @@ namespace NSE.Identidade.API.Controllers
 
             if (result.Succeeded)
             {
+                var clienteResult = await RegistrarCliente(usuarioRegistro);
+
+                if (clienteResult.ValidationResult.IsValid == false)
+                {
+                    await _userManager.DeleteAsync(usuario);
+                    return CustomResponse(clienteResult.ValidationResult);
+                }
+
                 var respotaLoginVM = await GerarJwt(usuario.Email);
                 return CustomResponse(respotaLoginVM);
             }
@@ -69,6 +82,26 @@ namespace NSE.Identidade.API.Controllers
                 return CustomErrorResponse("Usuário temporiariamente bloqueado por ter feito várias tentativas de entrada inválidas!");
 
             return CustomErrorResponse("Usuário ou senha inválidos.");
+        }
+
+        private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistroViewModel usuarioRegistro)
+        {
+            var usuario = await _userManager.FindByEmailAsync(usuarioRegistro.Email);
+
+            var usuarioRegistrado = new UsuarioRegistradoIntegrationEvent(
+                Guid.Parse(usuario.Id), usuarioRegistro.Nome, usuarioRegistro.Email, usuarioRegistro.Cpf
+            );
+
+            try
+            {
+                var responseMessage = await _bus.RequestAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(usuarioRegistrado);
+                return responseMessage;
+            }
+            catch (Exception)
+            {
+                await _userManager.DeleteAsync(usuario);
+                throw;
+            }
         }
 
         private async Task<UsuarioRespostaLoginViewModel> GerarJwt(string email)

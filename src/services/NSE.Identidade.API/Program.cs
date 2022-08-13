@@ -29,6 +29,8 @@ namespace NSE.Identidade.API
             _builder.AddApiConfiguration();
 
             _builder.AddSwaggerConfiguration();
+
+            _builder.AddMessageBusConfiguration();
         }
 
         private static void ConfigureRequestsPipeline()
