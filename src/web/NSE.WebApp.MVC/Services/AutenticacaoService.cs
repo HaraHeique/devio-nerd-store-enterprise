@@ -16,7 +16,6 @@ namespace NSE.WebApp.MVC.Services
         public AutenticacaoService(HttpClient httpClient, IOptions<AppSettings> options)
         {
             httpClient.BaseAddress = new Uri(options.Value.AutenticacaoUrl);
-
             _httpClient = httpClient;
         }
 
@@ -29,7 +28,7 @@ namespace NSE.WebApp.MVC.Services
             {
                 return new UsuarioRespostaLoginViewModel 
                 { 
-                    ResponseResult = await DeserializarObjetoResponse<ErrorResponseResultViewModel>(response)
+                    ResponseResult = await DeserializarObjetoResponse<ResponseResultViewModel>(response)
                 };
             }
 
@@ -45,7 +44,7 @@ namespace NSE.WebApp.MVC.Services
             {
                 return new UsuarioRespostaLoginViewModel
                 {
-                    ResponseResult = await DeserializarObjetoResponse<ErrorResponseResultViewModel>(response)
+                    ResponseResult = await DeserializarObjetoResponse<ResponseResultViewModel>(response)
                 };
             }
 
