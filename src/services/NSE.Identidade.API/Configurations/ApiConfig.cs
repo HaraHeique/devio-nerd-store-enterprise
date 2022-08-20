@@ -1,4 +1,5 @@
-﻿using NSE.WebAPI.Core.Identidade;
+﻿using Microsoft.AspNetCore.Mvc;
+using NSE.WebAPI.Core.Identidade;
 
 namespace NSE.Identidade.API.Configurations
 {
@@ -8,6 +9,8 @@ namespace NSE.Identidade.API.Configurations
         {
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
 
             return builder;
         }
