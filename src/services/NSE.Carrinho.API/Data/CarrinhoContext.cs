@@ -58,13 +58,15 @@ namespace NSE.Carrinho.API.Data
             void SetModelConfiguration(ModelBuilder modelBuilder)
             {
                 modelBuilder.Entity<CarrinhoCliente>()
-                    .HasIndex(c => c.ClientId)
+                    .HasIndex(c => c.ClienteId)
                     .HasDatabaseName("IDX_Cliente");
 
                 modelBuilder.Entity<CarrinhoCliente>()
                     .HasMany(c => c.Itens)
                     .WithOne(ci => ci.CarrinhoCliente)
                     .HasForeignKey(c => c.CarrinhoClienteId);
+
+                modelBuilder.Ignore<ValidationResult>();
             }
 
             #endregion

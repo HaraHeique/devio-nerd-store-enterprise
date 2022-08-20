@@ -28,7 +28,7 @@ namespace NSE.Carrinho.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid>("ClienteId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ValorTotal")
@@ -36,7 +36,7 @@ namespace NSE.Carrinho.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
+                    b.HasIndex("ClienteId")
                         .HasDatabaseName("IDX_Cliente");
 
                     b.ToTable("CarrinhoClientes");
@@ -62,7 +62,7 @@ namespace NSE.Carrinho.API.Migrations
                     b.Property<Guid>("ProdutoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Quantidadade")
+                    b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")

@@ -12,7 +12,7 @@ using NSE.Carrinho.API.Data;
 namespace NSE.Carrinho.API.Migrations
 {
     [DbContext(typeof(CarrinhoContext))]
-    [Migration("20220816032749_Initial")]
+    [Migration("20220820022700_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace NSE.Carrinho.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid>("ClienteId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ValorTotal")
@@ -38,7 +38,7 @@ namespace NSE.Carrinho.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
+                    b.HasIndex("ClienteId")
                         .HasDatabaseName("IDX_Cliente");
 
                     b.ToTable("CarrinhoClientes");
@@ -64,7 +64,7 @@ namespace NSE.Carrinho.API.Migrations
                     b.Property<Guid>("ProdutoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Quantidadade")
+                    b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
