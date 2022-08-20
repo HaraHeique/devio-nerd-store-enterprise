@@ -52,6 +52,8 @@ namespace NSE.WebAPI.Core.Controllers
 
         protected bool OperacaoValida() => !Erros.Any();
 
+        protected bool OperacaoInvalida() => !OperacaoValida();
+
         protected void AdicionarErros(params string[] erros) => Erros.AddRange(erros);
 
         protected void LimparErros() => Erros.Clear();
