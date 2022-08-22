@@ -49,7 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.WebAPI.Core", "src\buil
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{8AE55797-D292-49AA-BCAF-2689498FCFC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Infra.MessageBus", "src\building-blocks\NSE.Infra\NSE.Infra.MessageBus\NSE.Infra.MessageBus.csproj", "{6A4311EE-198F-4196-A8D0-F94B3DE89129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Infra.MessageBus", "src\building-blocks\NSE.Infra\NSE.Infra.MessageBus\NSE.Infra.MessageBus.csproj", "{6A4311EE-198F-4196-A8D0-F94B3DE89129}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.WebApp.MVC6", "src\web\NSE.WebApp.MVC6\NSE.WebApp.MVC6.csproj", "{CDE45B27-2B9C-480E-8AA1-08A3DDE4726E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,10 @@ Global
 		{6A4311EE-198F-4196-A8D0-F94B3DE89129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A4311EE-198F-4196-A8D0-F94B3DE89129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A4311EE-198F-4196-A8D0-F94B3DE89129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDE45B27-2B9C-480E-8AA1-08A3DDE4726E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDE45B27-2B9C-480E-8AA1-08A3DDE4726E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDE45B27-2B9C-480E-8AA1-08A3DDE4726E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDE45B27-2B9C-480E-8AA1-08A3DDE4726E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{3819AC57-E459-4F86-8FC6-178F2A8B3419} = {273CC147-5D5A-4739-8620-60DA5B73D335}
 		{8AE55797-D292-49AA-BCAF-2689498FCFC1} = {F4841A0B-3D40-48EE-ADDE-DF4E9AFBCE4B}
 		{6A4311EE-198F-4196-A8D0-F94B3DE89129} = {8AE55797-D292-49AA-BCAF-2689498FCFC1}
+		{CDE45B27-2B9C-480E-8AA1-08A3DDE4726E} = {39A95282-6C8C-4383-83F3-E1BE82C92395}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34385694-03CF-486A-BB03-F4A1C5A35945}
