@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NSE.WebApp.MVC.Middlewares;
 using NSE.WebApp.MVC.Options;
 
@@ -22,21 +21,13 @@ namespace NSE.WebApp.MVC.Configurations
 
         public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // Não sei qual erro foi e não foi pegado no catch do ExceptionMiddleware (não foi tratado)
-                app.UseExceptionHandler("/erro/500");
+            // Não sei qual erro foi e não foi pegado no catch do ExceptionMiddleware (não foi tratado)
+            app.UseExceptionHandler("/erro/500");
 
-                // Quando o erro é conhecido por ter sido tratado
-                app.UseStatusCodePagesWithRedirects("/erro/{0}");
+            // Quando o erro é conhecido por ter sido tratado
+            app.UseStatusCodePagesWithRedirects("/erro/{0}");
 
-                app.UseHsts();
-            }
-
+            app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
