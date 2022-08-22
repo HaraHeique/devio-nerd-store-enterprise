@@ -21,9 +21,9 @@ namespace NSE.WebApp.MVC
             services.RegisterDependencies();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            app.UseMvcConfiguration(env);
+            app.UseMvcConfiguration();
 
             app.UseGlobalizationConfiguration();
         }
