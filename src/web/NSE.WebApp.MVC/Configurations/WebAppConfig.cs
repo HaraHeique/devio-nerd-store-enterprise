@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSE.WebApp.MVC.Middlewares;
@@ -19,7 +18,7 @@ namespace NSE.WebApp.MVC.Configurations
             return services;
         }
 
-        public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app)
         {
             // Não sei qual erro foi e não foi pegado no catch do ExceptionMiddleware (não foi tratado)
             app.UseExceptionHandler("/erro/500");
