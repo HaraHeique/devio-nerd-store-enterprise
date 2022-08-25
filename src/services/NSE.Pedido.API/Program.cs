@@ -1,35 +1,46 @@
+using NSE.Pedido.API.Configuration;
+using NSE.WebAPI.Core.Identidade;
+
+#pragma warning disable
 namespace NSE.Pedido.API
 {
     public class Program
     {
+        private static WebApplicationBuilder _builder;
+        private static WebApplication _app;
+
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            _builder = WebApplication.CreateBuilder(args);
+            _builder.Configuration.SetDefaultConfig(_builder.Environment);
 
-            // Add services to the container.
+            ConfigureServices();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            _app = _builder.Build();
 
-            var app = builder.Build();
+            ConfigureRequestsPipeline();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            _app.Run();
+        }
 
-            app.UseHttpsRedirection();
+        private static void ConfigureServices()
+        {
+            _builder.AddApiConfiguration();
 
-            app.UseAuthorization();
+            _builder.AddJwtConfiguration();
 
+            _builder.AddSwaggerConfiguration();
 
-            app.MapControllers();
+            _builder.RegisterDependencies();
 
-            app.Run();
+            _builder.AddMessageBusConfiguration();
+        }
+
+        private static void ConfigureRequestsPipeline()
+        {
+            _app.UseApiConfiguration();
+
+            _app.UseSwaggerConfiguration();
         }
     }
 }
