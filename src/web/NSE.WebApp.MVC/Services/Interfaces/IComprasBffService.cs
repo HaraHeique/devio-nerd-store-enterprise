@@ -5,11 +5,12 @@ using NSE.WebApp.MVC.Models.Carrinho;
 
 namespace NSE.WebApp.MVC.Services.Interfaces
 {
-    public interface ICarrinhoService
+    public interface IComprasBffService
     {
         Task<CarrinhoViewModel> ObterCarrinho();
-        Task<ResponseResultViewModel> AdicionarItemCarrinho(ItemProdutoViewModel produto);
-        Task<ResponseResultViewModel> AtualizarItemCarrinho(Guid produtoId, ItemProdutoViewModel produto);
+        Task<int> ObterQuantidadeCarrinho();
+        Task<ResponseResultViewModel> AdicionarItemCarrinho(ItemCarrinhoViewModel produto);
+        Task<ResponseResultViewModel> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoViewModel produto);
         Task<ResponseResultViewModel> RemoverItemCarrinho(Guid produtoId);
     }
 }
