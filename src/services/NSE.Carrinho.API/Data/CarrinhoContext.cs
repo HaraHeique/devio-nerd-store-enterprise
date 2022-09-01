@@ -51,8 +51,9 @@ namespace NSE.Carrinho.API.Data
                 var foreignKeys = modelBuilder.Model.GetEntityTypes()
                     .SelectMany(e => e.GetForeignKeys());
 
+                // Necessário excluir os itens assim que o carrinho é deletado também, por isso o uso do DELETE cascade
                 foreach (var relationship in foreignKeys)
-                    relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                    relationship.DeleteBehavior = DeleteBehavior.Cascade;
             }
 
             void SetModelConfiguration(ModelBuilder modelBuilder)
@@ -65,6 +66,23 @@ namespace NSE.Carrinho.API.Data
                     .HasMany(c => c.Itens)
                     .WithOne(ci => ci.CarrinhoCliente)
                     .HasForeignKey(c => c.CarrinhoClienteId);
+
+                modelBuilder.Entity<CarrinhoCliente>()
+                    .OwnsOne(ci => ci.Voucher, v =>
+                    {
+                        v.Property(vc => vc.Codigo)
+                            .HasColumnName("VoucherCodigo")
+                            .HasColumnType("VARCHAR(50)");
+
+                        v.Property(vc => vc.TipoDesconto)
+                            .HasColumnName("TipoDesconto");
+
+                        v.Property(vc => vc.Percentual)
+                            .HasColumnName("Percentual");
+
+                        v.Property(vc => vc.ValorDesconto)
+                            .HasColumnName("ValorDesconto");
+                    });
 
                 modelBuilder.Ignore<ValidationResult>();
             }

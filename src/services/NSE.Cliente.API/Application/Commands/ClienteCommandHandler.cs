@@ -35,5 +35,15 @@ namespace NSE.Cliente.API.Application.Commands
             
             return await PersistirDados(_clienteRepository.UnitOfWork);
         }
+
+        public async Task<ValidationResult> Handle(AdicionarEnderecoCommand mensagem, CancellationToken cancellationToken)
+        {
+            if (!mensagem.EhValido()) return mensagem.ValidationResult;
+
+            var endereco = new Endereco(mensagem.Logradouro, mensagem.Numero, mensagem.Complemento, mensagem.Bairro, mensagem.Cep, mensagem.Cidade, mensagem.Estado, mensagem.ClienteId);
+            _clienteRepository.AdicionarEndereco(endereco);
+
+            return await PersistirDados(_clienteRepository.UnitOfWork);
+        }
     }
 }

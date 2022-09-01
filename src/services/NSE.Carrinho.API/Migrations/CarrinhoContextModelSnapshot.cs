@@ -31,8 +31,14 @@ namespace NSE.Carrinho.API.Migrations
                     b.Property<Guid>("ClienteId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Desconto")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("ValorTotal")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("VoucherUtilizado")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -75,11 +81,48 @@ namespace NSE.Carrinho.API.Migrations
                     b.ToTable("CarrinhoItens");
                 });
 
+            modelBuilder.Entity("NSE.Carrinho.API.Models.CarrinhoCliente", b =>
+                {
+                    b.OwnsOne("NSE.Carrinho.API.Models.ValueObjects.Voucher", "Voucher", b1 =>
+                        {
+                            b1.Property<Guid>("CarrinhoClienteId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Codigo")
+                                .IsRequired()
+                                .HasColumnType("VARCHAR(50)")
+                                .HasColumnName("VoucherCodigo");
+
+                            b1.Property<decimal?>("Percentual")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("Percentual");
+
+                            b1.Property<int>("TipoDesconto")
+                                .HasColumnType("int")
+                                .HasColumnName("TipoDesconto");
+
+                            b1.Property<decimal?>("ValorDesconto")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("ValorDesconto");
+
+                            b1.HasKey("CarrinhoClienteId");
+
+                            b1.ToTable("CarrinhoClientes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CarrinhoClienteId");
+                        });
+
+                    b.Navigation("Voucher")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("NSE.Carrinho.API.Models.CarrinhoItem", b =>
                 {
                     b.HasOne("NSE.Carrinho.API.Models.CarrinhoCliente", "CarrinhoCliente")
                         .WithMany("Itens")
                         .HasForeignKey("CarrinhoClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CarrinhoCliente");

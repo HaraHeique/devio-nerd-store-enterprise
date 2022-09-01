@@ -17,6 +17,19 @@ namespace NSE.Catalogo.API.Data.Repositories
 
         public async Task<Produto> ObterPorId(Guid id) => await _context.Produtos.FindAsync(id);
 
+        public async Task<List<Produto>> ObterProdutosPorId(string ids)
+        {
+            var idsGuid = ids.Split(',')
+                .Select(id => (Ok: Guid.TryParse(id, out var x), Value: x));
+
+            if (!idsGuid.All(nid => nid.Ok)) return new List<Produto>();
+
+            var idsValue = idsGuid.Select(id => id.Value);
+
+            return await _context.Produtos.AsNoTracking()
+                .Where(p => idsValue.Contains(p.Id) && p.Ativo).ToListAsync();
+        }
+
         public void Adicionar(Produto produto) => _context.Produtos.Add(produto);
 
         public void Atualizar(Produto produto) => _context.Produtos.Update(produto);

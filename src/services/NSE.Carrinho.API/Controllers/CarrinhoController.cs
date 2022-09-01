@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NSE.Carrinho.API.Data;
 using NSE.Carrinho.API.Models;
+using NSE.Carrinho.API.Models.ValueObjects;
 using NSE.WebAPI.Core.Controllers;
 using NSE.WebAPI.Core.Usuario;
 
@@ -85,6 +86,21 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
+        [HttpPost]
+        [Route("carrinho/aplicar-voucher")]
+        public async Task<IActionResult> AplicarVoucher(Voucher voucher)
+        {
+            var carrinho = await ObterCarrinhoCliente();
+
+            carrinho.AplicarVoucher(voucher);
+
+            _context.CarrinhoClientes.Update(carrinho);
+
+            await PersistirDados();
+
+            return CustomResponse();
+        }
+
         private async Task<CarrinhoCliente?> ObterCarrinhoCliente()
         {
             return await _context.CarrinhoClientes
@@ -148,7 +164,7 @@ namespace NSE.Carrinho.API.Controllers
             var resultadoAlteracoes = await _context.SaveChangesAsync();
 
             if (resultadoAlteracoes <= 0) 
-                CustomErrorResponse("Não foi possível persistir os dados no banco");
+                AdicionarErros("Não foi possível persistir os dados no banco");
         }
 
         private bool ValidarCarrinho(CarrinhoCliente carrinho)

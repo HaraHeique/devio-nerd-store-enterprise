@@ -1,5 +1,7 @@
 ﻿using FluentValidation.Results;
+using NSE.Carrinho.API.Models.Enums;
 using NSE.Carrinho.API.Models.Validations;
+using NSE.Carrinho.API.Models.ValueObjects;
 
 namespace NSE.Carrinho.API.Models
 {
@@ -10,10 +12,13 @@ namespace NSE.Carrinho.API.Models
         public Guid Id { get; set; }
         public Guid ClienteId { get; set; }
         public decimal ValorTotal { get; set; }
+        public bool VoucherUtilizado { get; set; }
+        public decimal Desconto { get; set; }
+        public Voucher Voucher { get; set; }
 
         public ValidationResult ValidationResult { get; set; }
 
-        // EF Relation
+        // EF Relations
         public List<CarrinhoItem> Itens { get; set; }
 
         // EF Constructor
@@ -31,6 +36,7 @@ namespace NSE.Carrinho.API.Models
         internal void CalcularValorTotal()
         {
             ValorTotal = Itens.Sum(ci => ci.CalcularValorTotal());
+            CalcularValorTotalDesconto();
         }
 
         internal bool CarrinhoItemExistente(CarrinhoItem item)
@@ -94,6 +100,41 @@ namespace NSE.Carrinho.API.Models
             ValidationResult = new ValidationResult(erros);
 
             return ValidationResult.IsValid;
+        }
+
+        internal void AplicarVoucher(Voucher voucher)
+        {
+            Voucher = voucher;
+            VoucherUtilizado = true;
+            CalcularValorTotal();
+        }
+
+        private void CalcularValorTotalDesconto()
+        {
+            if (!VoucherUtilizado) return;
+
+            decimal desconto = 0M;
+            decimal valor = ValorTotal;
+
+            if (Voucher.TipoDesconto == TipoDescontoVoucher.Porcentagem)
+            {
+                if (Voucher.Percentual.HasValue)
+                {
+                    desconto = (valor * Voucher.Percentual.Value) / 100;
+                    valor -= desconto;
+                }
+            }
+            else
+            {
+                if (Voucher.ValorDesconto.HasValue)
+                {
+                    desconto = Voucher.ValorDesconto.Value;
+                    valor -= desconto;
+                }
+            }
+
+            ValorTotal = valor < 0 ? 0 : valor;
+            Desconto = desconto;
         }
     }
 }
