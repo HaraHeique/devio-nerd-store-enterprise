@@ -37,10 +37,10 @@ namespace NSE.Bff.Compras.Services
 
         public async Task<ResponseResult> AplicarVoucherCarrinho(VoucherDTO voucher)
         {
-            //var response = await _httpClient.("/carrinho", ObterConteudo(voucher));
+            var response = await _httpClient.PostAsync("/carrinho/aplicar-voucher", ObterConteudo(voucher));
 
-            //if (!TratarErrosResponse(response))
-            //    return await DeserializarObjetoResponse<ResponseResult>(response);
+            if (!TratarErrosResponse(response))
+                return await DeserializarObjetoResponse<ResponseResult>(response);
 
             return RetornoOk();
         }
