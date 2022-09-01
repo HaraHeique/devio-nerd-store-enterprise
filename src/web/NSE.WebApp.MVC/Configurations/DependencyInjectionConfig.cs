@@ -36,6 +36,11 @@ namespace NSE.WebApp.MVC.Configurations
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
 
+            services.AddHttpClient<IClienteService, ClienteService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
+
             services.AddHttpClient<IComprasBffService, ComprasBffService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())

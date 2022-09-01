@@ -41,6 +41,6 @@ namespace NSE.WebApp.MVC.Services
         protected async Task<T> DeserializarObjetoResponse<T>(HttpResponseMessage response) 
             => JsonSerializer.Deserialize<T>(await response.Content.ReadAsStringAsync(), SerializerOptionsDefault);
 
-        protected ResponseResultViewModel ReturnoOk() => new();
+        protected ResponseResultViewModel RetornoOk() => new();
     }
 }
