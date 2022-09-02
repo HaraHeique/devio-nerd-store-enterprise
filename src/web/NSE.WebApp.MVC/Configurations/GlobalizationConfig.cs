@@ -22,6 +22,9 @@ namespace NSE.WebApp.MVC.Configurations
 
             app.UseRequestLocalization(localizationOptions);
 
+            CultureInfo.DefaultThreadCurrentCulture = supportedCultures[0];
+            CultureInfo.DefaultThreadCurrentUICulture = supportedCultures[0];
+
             return app;
         }
     }

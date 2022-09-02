@@ -37,7 +37,7 @@ namespace NSE.Pedidos.API.Application.Queries
             //var pedido = ObterUltimoPedido(sql, clientId);
 
             var pedido = await _pedidoRepository.ObterConexao()
-                .QueryAsync<dynamic>(sql, new { clientId });
+                .QueryAsync<dynamic>(sql, new { clienteId = clientId });
 
             return MapearPedido(pedido);
         }

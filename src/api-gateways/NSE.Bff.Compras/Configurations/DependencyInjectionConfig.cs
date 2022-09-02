@@ -32,6 +32,21 @@ namespace NSE.Bff.Compras.Configurations
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
+            
+            services.AddHttpClient<IPedidoService, PedidoService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
+            
+            services.AddHttpClient<IClienteService, ClienteService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
+            
+            services.AddHttpClient<IPagamentoService, PagamentoService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
         }
     }
 }

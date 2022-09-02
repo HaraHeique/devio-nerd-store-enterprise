@@ -7,6 +7,7 @@ using NSE.Cliente.API.Data;
 using NSE.Cliente.API.Data.Repositorios;
 using NSE.Cliente.API.Models;
 using NSE.Core.Mediator;
+using NSE.WebAPI.Core.Usuario;
 using System.Reflection;
 
 namespace NSE.Cliente.API.Configuration
@@ -19,15 +20,17 @@ namespace NSE.Cliente.API.Configuration
             builder.Services.AddDbContext<ClientesContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
-
-            builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-
             builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 
+            builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             builder.Services.AddScoped<IMediatorHandler, MediatorHandler>();
-            builder.Services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
-            
-            builder.Services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
+
+            // Não há necessidade dessa duas linhas abaixo porque o AddMediatR já resolve a dependência desses recursos automaticamente
+            //builder.Services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
+            //builder.Services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IAspNetUser, AspNetUser>();
 
             return builder;
         }
