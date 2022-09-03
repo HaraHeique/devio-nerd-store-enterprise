@@ -2,7 +2,7 @@
 
 namespace NSE.Core.Messages
 {
-    public class Event : Message, INotification
+    public abstract class Event : Message, INotification
     {
         public DateTime TimeStamp { get; protected set; }
 

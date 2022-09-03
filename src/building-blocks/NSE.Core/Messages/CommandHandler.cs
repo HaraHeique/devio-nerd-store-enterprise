@@ -16,6 +16,11 @@ namespace NSE.Core.Messages
         {
             ValidationResult.Errors.Add(new ValidationFailure(string.Empty, mensagem));
         }
+        
+        protected void AdicionarErros(List<ValidationFailure> falhasValidacoes)
+        {
+            ValidationResult.Errors.AddRange(falhasValidacoes);
+        }
 
         protected async Task<ValidationResult> PersistirDados(IUnitOfWork uow)
         {
