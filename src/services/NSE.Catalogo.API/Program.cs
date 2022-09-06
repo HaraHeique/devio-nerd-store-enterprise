@@ -32,6 +32,8 @@ namespace NSE.Catalogo.API
             _builder.AddSwaggerConfiguration();
 
             _builder.RegisterDependencies();
+
+            _builder.AddMessageBusConfiguration();
         }
 
         private static void ConfigureRequestsPipeline()

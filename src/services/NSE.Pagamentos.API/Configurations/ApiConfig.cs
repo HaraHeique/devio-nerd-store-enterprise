@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NSE.Pagamentos.API.Facade;
 using NSE.WebAPI.Core.Identidade;
 
 namespace NSE.Pagamentos.API.Configurations
@@ -11,6 +12,7 @@ namespace NSE.Pagamentos.API.Configurations
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
+            builder.Services.Configure<PagamentoConfig>(builder.Configuration.GetSection("PagamentoConfig"));
 
             builder.Services.AddCors(options =>
             {
