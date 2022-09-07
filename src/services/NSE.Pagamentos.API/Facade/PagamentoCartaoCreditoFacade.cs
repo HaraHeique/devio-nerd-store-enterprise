@@ -65,7 +65,6 @@ namespace NSE.Pagamentos.API.Facade
         {
             return new Transacao
             {
-                Id = Guid.NewGuid(),
                 Status = (StatusTransacao)transaction.Status,
                 ValorTotal = transaction.Amount,
                 BandeiraCartao = transaction.CardBrand,

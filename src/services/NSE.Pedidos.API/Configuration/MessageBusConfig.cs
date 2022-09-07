@@ -11,7 +11,8 @@ namespace NSE.Pedidos.API.Configuration
             // OBS.: Todo hosted service tem injeção de dependência singleton. Logo não pode injetar nada nele que não seja singleton
 
             builder.Services.AddMessageBus(builder.Configuration.GetMessageQueueConnection("MessageBus")!)
-                .AddHostedService<PedidosOrquestradorIntegrationHandler>();
+                .AddHostedService<PedidosOrquestradorIntegrationHandler>()
+                .AddHostedService<PedidoIntegrationHandler>();
 
             return builder;
         }

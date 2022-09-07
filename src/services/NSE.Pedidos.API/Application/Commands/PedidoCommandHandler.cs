@@ -154,7 +154,7 @@ namespace NSE.Pedidos.API.Application.Commands
 
             AdicionarErros(ValidationResult.Errors);
 
-            return true;
+            return false;
         }
     }
 }

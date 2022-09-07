@@ -73,7 +73,7 @@ namespace NSE.Pedidos.API.Application.Queries
             return lookup.Values.OrderBy(p => p.Data).FirstOrDefault();
         }
 
-        private PedidoDTO MapearPedido(dynamic resultado)
+        private static PedidoDTO MapearPedido(dynamic resultado)
         {
             var pedido = new PedidoDTO
             {

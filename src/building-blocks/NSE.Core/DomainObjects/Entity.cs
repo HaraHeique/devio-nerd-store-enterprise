@@ -4,9 +4,11 @@ namespace NSE.Core.DomainObjects
 {
     public abstract class Entity
     {
-        private List<Event> _notificacoes;
+        public Guid Id { get; protected set; }
 
-        public Guid Id { get; set; }
+        protected Entity() => Id = Guid.NewGuid();
+
+        private List<Event> _notificacoes;
 
         public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
 

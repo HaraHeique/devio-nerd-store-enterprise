@@ -25,7 +25,7 @@ namespace NSE.Pedidos.API.Services
             _logger.LogInformation("Serviço de pedidos iniciado.");
 
             // Roda o método ProcessarPedidos no momento que o HostedService é startado numa recorrência de 15 em 15 sec
-            _timer = new Timer(ProcessarPedidos, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
+            _timer = new Timer(ProcessarPedidos, null, TimeSpan.Zero, TimeSpan.FromSeconds(90));
 
             return Task.CompletedTask;
         }
