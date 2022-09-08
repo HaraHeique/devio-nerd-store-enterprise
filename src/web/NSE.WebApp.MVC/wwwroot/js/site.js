@@ -11,7 +11,6 @@
 
         //Quando o campo cep perde o foco.
         $("#Endereco_Cep").blur(function () {
-            console.log("Teste!");
 
             //Nova variável "cep" somente com dígitos.
             var cep = $(this).val().replace(/\D/g, '');
