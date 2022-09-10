@@ -1,20 +1,21 @@
 ﻿namespace NSE.Identidade.API.Models
 {
-    public class UsuarioRespostaLoginViewModel
+    public class UsuarioRespostaLogin
     {
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
-        public UsuarioTokenViewModel UsuarioToken { get; set; }
+        public UsuarioToken UsuarioToken { get; set; }
+        public Guid RefreshToken { get; set; }
     }
 
-    public class UsuarioTokenViewModel
+    public class UsuarioToken
     {
         public string Id { get; set; }
         public string Email { get; set; }
-        public IEnumerable<UsuarioClaimViewModel> Claims { get; set; }
+        public IEnumerable<UsuarioClaim> Claims { get; set; }
     }
 
-    public class UsuarioClaimViewModel
+    public class UsuarioClaim
     {
         public string Value { get; set; }
         public string Type { get; set; }

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using NSE.Identidade.API.Data;
 using NSE.Identidade.API.Extensions;
-using NSE.WebAPI.Core.Identidade;
 
 namespace NSE.Identidade.API.Configurations
 {
@@ -10,6 +9,9 @@ namespace NSE.Identidade.API.Configurations
     {
         public static WebApplicationBuilder AddIdentityConfiguration(this WebApplicationBuilder builder)
         {
+            var appSettingsSection = builder.Configuration.GetSection("AppTokenSettings");
+            builder.Services.Configure<AppTokenSettings>(appSettingsSection);
+
             // Definindo o algoritmo de forma aleatória para gerar a chave e definindo o local onde será persistido as chaves
             builder.Services.AddJwksManager()
                 .PersistKeysToDatabaseStore<ApplicationDbContext>();

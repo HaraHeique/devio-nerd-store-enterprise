@@ -2,7 +2,7 @@
 
 namespace NSE.Identidade.API.Models
 {
-    public class UsuarioRegistroViewModel
+    public class UsuarioRegistro
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public string Nome { get; set; }
