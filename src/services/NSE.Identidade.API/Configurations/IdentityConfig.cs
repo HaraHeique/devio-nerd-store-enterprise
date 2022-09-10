@@ -10,6 +10,10 @@ namespace NSE.Identidade.API.Configurations
     {
         public static WebApplicationBuilder AddIdentityConfiguration(this WebApplicationBuilder builder)
         {
+            // Definindo o algoritmo de forma aleatória para gerar a chave e definindo o local onde será persistido as chaves
+            builder.Services.AddJwksManager()
+                .PersistKeysToDatabaseStore<ApplicationDbContext>();
+
             builder.Services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
             ));
@@ -20,7 +24,8 @@ namespace NSE.Identidade.API.Configurations
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            builder.AddJwtConfiguration();
+            // Como essa API só emite tokens não preciso dessa configuração que é para validá-lo/entende-lo
+            //builder.AddJwtConfiguration();
 
             return builder;
         }

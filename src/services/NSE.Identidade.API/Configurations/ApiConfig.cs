@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NSE.WebAPI.Core.Identidade;
+using NSE.WebAPI.Core.Usuario;
 
 namespace NSE.Identidade.API.Configurations
 {
@@ -9,6 +10,8 @@ namespace NSE.Identidade.API.Configurations
         {
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddScoped<IAspNetUser, AspNetUser>();
 
             builder.Services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
 
@@ -27,6 +30,10 @@ namespace NSE.Identidade.API.Configurations
             app.UseAuthConfiguration();
 
             app.MapControllers();
+
+            // Responsável por expor o endpoint com a chave pública criada
+            // Rota padrão é localhost/jwks, mas pode ser configurada
+            app.UseJwksDiscovery();
 
             return app;
         }

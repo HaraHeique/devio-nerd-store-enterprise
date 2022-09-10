@@ -2,14 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.Jwt.Core.Interfaces;
 using NSE.Core.Messages.Integration;
 using NSE.Identidade.API.Models;
 using NSE.Infra.MessageBus;
 using NSE.WebAPI.Core.Controllers;
 using NSE.WebAPI.Core.Identidade;
+using NSE.WebAPI.Core.Usuario;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace NSE.Identidade.API.Controllers
 {
@@ -17,21 +18,24 @@ namespace NSE.Identidade.API.Controllers
     [Route("api/identidade")]
     public class AuthController : MainController
     {
-        private readonly AppSettings _appSettings;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMessageBus _bus;
+        private readonly IAspNetUser _aspNetUser;
+        private readonly IJwtService _jwksService;
 
         public AuthController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IOptions<AppSettings> appSettings,
-            IMessageBus bus)
+            IMessageBus bus,
+            IAspNetUser aspNetUser,
+            IJwtService jwksService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _appSettings = appSettings.Value;
             _bus = bus;
+            _aspNetUser = aspNetUser;
+            _jwksService = jwksService;
         }
 
         [HttpPost("nova-conta")]
@@ -111,7 +115,7 @@ namespace NSE.Identidade.API.Controllers
             var claims = await _userManager.GetClaimsAsync(user);
 
             var identityClaims = await ObterClaimsUsuario(claims, user);
-            string encodedToken = CodificarToken(identityClaims);
+            string encodedToken = await CodificarToken(identityClaims);
 
             return ObterRespostaToken(user, claims, encodedToken);
         }
@@ -143,18 +147,21 @@ namespace NSE.Identidade.API.Controllers
             }
         }
 
-        private string CodificarToken(ClaimsIdentity identityClaims)
+        private async Task<string> CodificarToken(ClaimsIdentity identityClaims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = await _jwksService.GetCurrentSigningCredentials();
+
+            // Será o Host onde este servidor de autenticação/identidade está hospedado (é o próprio endpoint da API)
+            var currentIssuer = $"{_aspNetUser.ObterHttpContext().Request.Scheme}://{_aspNetUser.ObterHttpContext().Request.Host}";
 
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = currentIssuer,
+                //Audience = _appSettings.ValidoEm,
                 Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = key
             });
 
             string encodedToken = tokenHandler.WriteToken(token);
@@ -167,7 +174,7 @@ namespace NSE.Identidade.API.Controllers
             return new UsuarioRespostaLoginViewModel
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalMilliseconds,
+                ExpiresIn = TimeSpan.FromHours(1).TotalMilliseconds,
                 UsuarioToken = new UsuarioTokenViewModel
                 {
                     Id = user.Id,
