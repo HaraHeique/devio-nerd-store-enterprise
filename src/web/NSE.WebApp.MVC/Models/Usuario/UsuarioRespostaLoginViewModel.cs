@@ -8,6 +8,7 @@ namespace NSE.WebApp.MVC.Models.Usuario
         public double ExpiresIn { get; set; }
         public UsuarioTokenViewModel UsuarioToken { get; set; }
         public ResponseResultViewModel ResponseResult { get; set; }
+        public string RefreshToken { get; set; }
     }
 
     public class UsuarioTokenViewModel

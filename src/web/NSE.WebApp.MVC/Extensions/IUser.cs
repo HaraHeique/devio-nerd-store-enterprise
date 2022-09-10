@@ -15,6 +15,7 @@ namespace NSE.WebApp.MVC.Extensions
         bool PossuiRole(string role);
         IEnumerable<Claim> ObterClaims();
         HttpContext ObterHttpContext();
+        string ObterUserRefreshToken();
     }
 
     public class AspNetUser : IUser
@@ -62,6 +63,11 @@ namespace NSE.WebApp.MVC.Extensions
         {
             return _accessor.HttpContext;
         }
+
+        public string ObterUserRefreshToken()
+        {
+            return _accessor.HttpContext.User.GetUserRefreshToken();
+        }
     }
 
     public static class ClaimsPrincipalExtensions
@@ -90,6 +96,15 @@ namespace NSE.WebApp.MVC.Extensions
                 throw new ArgumentException(nameof(principal));
 
             var claim = principal.FindFirst("JWT");
+            return claim?.Value;
+        }
+        
+        public static string GetUserRefreshToken(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+                throw new ArgumentException(nameof(principal));
+
+            var claim = principal.FindFirst("RefreshToken");
             return claim?.Value;
         }
     }
