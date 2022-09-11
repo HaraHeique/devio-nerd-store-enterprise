@@ -42,6 +42,7 @@ namespace NSE.WebApp.MVC.Middlewares
                     _autenticacaoService.RefreshTokenValido().Result)
                 {
                     context.Response.Redirect(context.Request.Path);
+                    return;
                 }
 
                 // Usuário não é válido e não tem nada a ver com o token expirado.

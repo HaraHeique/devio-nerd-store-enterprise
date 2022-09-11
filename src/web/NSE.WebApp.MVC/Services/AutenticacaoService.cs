@@ -121,7 +121,7 @@ namespace NSE.WebApp.MVC.Services
         {
             var jwt = _user.ObterUserToken();
             
-            if (jwt is null) return false;
+            if (string.IsNullOrEmpty(jwt)) return false;
 
             var token = ObterTokenFormatado(jwt);
 

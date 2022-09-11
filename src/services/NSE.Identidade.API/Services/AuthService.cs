@@ -125,7 +125,7 @@ namespace NSE.Identidade.API.Services
             return new UsuarioRespostaLogin
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(1).TotalMilliseconds,
+                ExpiresIn = TimeSpan.FromHours(1).TotalSeconds,
                 UsuarioToken = new UsuarioToken
                 {
                     Id = user.Id,
