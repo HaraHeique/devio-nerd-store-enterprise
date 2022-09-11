@@ -33,6 +33,8 @@ namespace NSE.Bff.Compras
 
             _builder.RegisterDependencies();
 
+            _builder.ConfigureGrpcServices();
+
             _builder.AddMessageBusConfiguration();
         }
 
