@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using NSE.WebApp.MVC.Exceptions;
 using NSE.WebApp.MVC.Services.Interfaces;
@@ -25,17 +26,37 @@ namespace NSE.WebApp.MVC.Middlewares
             }
             catch (CustomHttpRequestException ex)
             {
-                HandleRequestExceptionAsync(httpContext, ex);
+                HandleRequestExceptionAsync(httpContext, ex.StatusCode);
             }
             catch (BrokenCircuitException)
             {
                 HandleCircuitBreakerExceptionAsync(httpContext);
             }
+            catch (RpcException ex)
+            {
+                //400 Bad Request	    INTERNAL
+                //401 Unauthorized      UNAUTHENTICATED
+                //403 Forbidden         PERMISSION_DENIED
+                //404 Not Found         UNIMPLEMENTED
+
+                var statusCode = ex.StatusCode switch
+                {
+                    StatusCode.Internal => 400,
+                    StatusCode.Unauthenticated => 401,
+                    StatusCode.PermissionDenied => 403,
+                    StatusCode.Unimplemented => 404,
+                    _ => 500
+                };
+
+                var httpStatusCode = (HttpStatusCode)statusCode;
+
+                HandleRequestExceptionAsync(httpContext, httpStatusCode);
+            }
         }
 
-        private static void HandleRequestExceptionAsync(HttpContext context, CustomHttpRequestException httpRequestException)
+        private static void HandleRequestExceptionAsync(HttpContext context, HttpStatusCode statusCode)
         {
-            if (httpRequestException.StatusCode == HttpStatusCode.Unauthorized)
+            if (statusCode == HttpStatusCode.Unauthorized)
             {
                 // Tenta renovar o RefreshToken, caso TokenExpirado seja verdadeiro
                 if (_autenticacaoService.TokenExpirado() && 
@@ -52,7 +73,7 @@ namespace NSE.WebApp.MVC.Middlewares
                 return;
             }
 
-            context.Response.StatusCode = (int)httpRequestException.StatusCode;
+            context.Response.StatusCode = (int)statusCode;
         }
 
         private static void HandleCircuitBreakerExceptionAsync(HttpContext context)
