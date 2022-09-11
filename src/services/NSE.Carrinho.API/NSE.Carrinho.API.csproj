@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.2.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.48.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
@@ -24,6 +25,10 @@
     <ProjectReference Include="..\..\building-blocks\NSE.Core\NSE.Core.csproj" />
     <ProjectReference Include="..\..\building-blocks\NSE.Infra\NSE.Infra.MessageBus\NSE.Infra.MessageBus.csproj" />
     <ProjectReference Include="..\..\building-blocks\NSE.WebAPI.Core\NSE.WebAPI.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\carrinho.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

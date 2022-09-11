@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NSE.Carrinho.API.Services.gRPC;
 using NSE.WebAPI.Core.Identidade;
 
 namespace NSE.Carrinho.API.Configurations
@@ -9,6 +10,8 @@ namespace NSE.Carrinho.API.Configurations
         {
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddGrpc();
 
             builder.Services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
 
@@ -39,6 +42,7 @@ namespace NSE.Carrinho.API.Configurations
             app.UseAuthConfiguration();
 
             app.MapControllers();
+            app.MapGrpcService<CarrinhoGrpcService>().RequireCors("AcessoTotal");
 
             return app;
         }
