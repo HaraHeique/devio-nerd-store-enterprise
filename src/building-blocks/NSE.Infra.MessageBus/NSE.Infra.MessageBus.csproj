@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NSE.Core\NSE.Core.csproj" />
+    <ProjectReference Include="..\NSE.Core\NSE.Core.csproj" />
   </ItemGroup>
 
 </Project>
