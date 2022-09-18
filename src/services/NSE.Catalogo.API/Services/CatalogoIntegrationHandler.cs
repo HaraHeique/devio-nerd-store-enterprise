@@ -9,12 +9,15 @@ namespace NSE.Catalogo.API.Services
     {
         private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<CatalogoIntegrationHandler> _logger;
 
-        public CatalogoIntegrationHandler(IServiceProvider serviceProvider, IMessageBus bus)
+        public CatalogoIntegrationHandler(IServiceProvider serviceProvider, IMessageBus bus, ILogger<CatalogoIntegrationHandler> logger)
         {
             _serviceProvider = serviceProvider;
             _bus = bus;
+            _logger = logger;
         }
+
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             SetSubscribers();
@@ -29,6 +32,14 @@ namespace NSE.Catalogo.API.Services
 
         private async Task BaixarEstoque(PedidoAutorizadoIntegrationEvent message)
         {
+            _logger.LogInformation("Inicializando a baixa de estoque");
+
+            if (message.PedidoId == Guid.Empty)
+            {
+                _logger.LogError("Mensagem de integração inválida");
+                return;
+            }
+
             using var scope = _serviceProvider.CreateScope();
             var produtosComEstoque = new List<Produto>();
             var produtoRepository = scope.ServiceProvider.GetRequiredService<IProdutoRepository>();
