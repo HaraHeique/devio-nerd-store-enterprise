@@ -33,16 +33,16 @@ namespace NSE.Bff.Compras.Controllers
         [Route("compras/carrinho")]
         public async Task<IActionResult> Index()
         {
-            //return CustomResponse(await _carrinhoService.ObterCarrinho());
-            return CustomResponse(await _carrinhoGrpcService.ObterCarrinho());
+            return CustomResponse(await _carrinhoService.ObterCarrinho());
+            //return CustomResponse(await _carrinhoGrpcService.ObterCarrinho());
         }
 
         [HttpGet]
         [Route("compras/carrinho-quantidade")]
         public async Task<ActionResult<int>> ObterQuantidadeCarrinho()
         {
-            //var carrinho = await _carrinhoService.ObterCarrinho();
-            var carrinho = await _carrinhoGrpcService.ObterCarrinho();
+            var carrinho = await _carrinhoService.ObterCarrinho();
+            //var carrinho = await _carrinhoGrpcService.ObterCarrinho();
             var quantidade = carrinho?.Itens.Sum(item => item.Quantidade) ?? 0;
 
             return CustomResponse(quantidade);

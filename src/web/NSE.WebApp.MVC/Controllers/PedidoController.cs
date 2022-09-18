@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSE.WebApp.MVC.Models.Pedido;
 using NSE.WebApp.MVC.Services.Interfaces;
 
 namespace NSE.WebApp.MVC.Controllers
 {
+    [Authorize]
     public class PedidoController : MainController
     {
         private readonly IClienteService _clienteService;

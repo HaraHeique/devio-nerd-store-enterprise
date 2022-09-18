@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NSE.Cliente.API.Application.Commands;
 using NSE.Cliente.API.Models;
 using NSE.Core.Mediator;
@@ -7,6 +8,7 @@ using NSE.WebAPI.Core.Usuario;
 
 namespace NSE.Cliente.API.Controllers
 {
+    [Authorize]
     public class ClienteController : MainController
     {
         private readonly IClienteRepository _clienteRepository;

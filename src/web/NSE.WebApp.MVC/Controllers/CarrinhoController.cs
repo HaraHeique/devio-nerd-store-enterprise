@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NSE.WebApp.MVC.Models.Carrinho;
 using NSE.WebApp.MVC.Services.Interfaces;
 using System;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace NSE.WebApp.MVC.Controllers
 {
+    [Authorize]
     public class CarrinhoController : MainController
     {
         private readonly IComprasBffService _comprasBffService;
