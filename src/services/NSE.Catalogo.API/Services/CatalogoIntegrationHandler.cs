@@ -34,12 +34,6 @@ namespace NSE.Catalogo.API.Services
         {
             _logger.LogInformation("Inicializando a baixa de estoque");
 
-            if (message.PedidoId == Guid.Empty)
-            {
-                _logger.LogError("Mensagem de integração inválida");
-                return;
-            }
-
             using var scope = _serviceProvider.CreateScope();
             var produtosComEstoque = new List<Produto>();
             var produtoRepository = scope.ServiceProvider.GetRequiredService<IProdutoRepository>();
