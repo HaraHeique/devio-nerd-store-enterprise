@@ -1,5 +1,3 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -7,10 +5,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/api-gateways/NSE.Bff.Compras/NSE.Bff.Compras.csproj", "src/api-gateways/NSE.Bff.Compras/"]
-RUN dotnet restore "src/api-gateways/NSE.Bff.Compras/NSE.Bff.Compras.csproj"
+COPY ["./api-gateways/NSE.Bff.Compras/NSE.Bff.Compras.csproj", "./api-gateways/NSE.Bff.Compras/"]
+COPY ["./building-blocks/NSE.Core/NSE.Core.csproj", "/building-blocks/NSE.Core/"]
+COPY ["./building-blocks/NSE.WebAPI.Core/NSE.WebAPI.Core.csproj", "building-blocks/NSE.WebAPI.Core/"]
+COPY ["./building-blocks/NSE.Infra.MessageBus/NSE.Infra.MessageBus.csproj", "./building-blocks/NSE.Infra.MessageBus/"]
+RUN dotnet restore "./api-gateways/NSE.Bff.Compras/NSE.Bff.Compras.csproj"
 COPY . .
-WORKDIR "/src/src/api-gateways/NSE.Bff.Compras"
+WORKDIR "api-gateways/NSE.Bff.Compras"
 RUN dotnet build "NSE.Bff.Compras.csproj" -c Release -o /app/build
 
 FROM build AS publish
