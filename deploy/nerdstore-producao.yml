@@ -1,0 +1,150 @@
+version: "3" # não precisa colocar mais é opcional segundo docs (é até depreciado)
+
+# services é onde declaro e configuro meus componentes da aplicação (cada dockerfile/container)
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbit-nerdstore
+    environment:
+      RABBITMQ_DEFAULT_USER: "nerdstore"
+      RABBITMQ_DEFAULT_PASS: "nerdstore"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  sql-server:
+    image: haraheique/nerdstore-sql-server:latest
+    container_name: nerdstore-sql-server
+    build:
+      context: ../sql
+      dockerfile: ./Dockerfile
+    environment:
+      SA_PASSWORD: "MeuDB@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+  web-mvc:
+    image: haraheique/nerdstore-web-mvc-ecommerce:latest
+    container_name: nerdstore-web-mvc-ecommerce
+    build:
+      context: ../src
+      dockerfile: ./web/NSE.WebApp.MVC/Dockerfile
+    restart: always
+    ports:
+      - "5001:5001"
+      #- "5001:80" Usando a porta do container exposta do Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5001 # Estou falando que a aplicação vai rodar na porta 5001, não necessitando de usar mesma porta do container definida no Dockerfile
+    depends_on:
+      - api-catalogo
+      - api-identidade
+      - api-cliente
+      - api-bff-compras
+
+  api-identidade:
+    image: hara-heique/nerdstore-api-identidade:latest
+    container_name: nerdstore-api-identidade
+    build:
+      context: ../src
+      dockerfile: ./services/NSE.Identidade.API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7055
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  api-carrinho:
+    image: haraheique/nerdstore-api-carrinho:latest
+    container_name: nerdstore-api-carrinho
+    build:
+      context: ../src
+      dockerfile: ./services/NSE.Carrinho.API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7072
+    depends_on:
+      - rabbitmq
+      - sql-server
+      - api-identidade
+
+  api-catalogo:
+    image: haraheique/nerdstore-api-catalogo:latest
+    container_name: nerdstore-api-catalogo
+    build:
+      context: ../src
+      dockerfile: ./services/NSE.Catalogo.API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7195
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  api-cliente:
+    image: haraheique/nerdstore-api-cliente:latest
+    container_name: nerdstore-api-cliente
+    build:
+      context: ../src
+      dockerfile: ./services/NSE.Cliente.API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7214
+    depends_on:
+      - rabbitmq
+      - sql-server
+      - api-identidade
+
+  api-bff-compras:
+    image: haraheique/nerdstore-api-bff-compras:latest
+    container_name: nerdstore-api-bff-compras
+    build:
+      context: ../src
+      dockerfile: ./api-gateways/NSE.Bff.Compras/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7084
+    depends_on:
+      - rabbitmq
+      - api-identidade
+      - api-carrinho
+      - api-pagamento
+      - api-pedido
+
+  api-pagamento:
+    image: haraheique/nerdstore-api-pagamento:latest
+    container_name: nerdstore-api-pagamento
+    build:
+      context: ../src
+      dockerfile: ./services/NSE.Pagamentos.API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7121
+    depends_on:
+      - rabbitmq
+      - api-identidade
+      - api-pedido
+      - sql-server
+
+  api-pedido:
+    image: haraheique/nerdstore-api-pedido:latest
+    container_name: nerdstore-api-pedido
+    build:
+      context: ../src
+      dockerfile: ./services/NSE.Pedidos.API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:7020
+    depends_on:
+      - rabbitmq
+      - sql-server
+      - api-identidade
