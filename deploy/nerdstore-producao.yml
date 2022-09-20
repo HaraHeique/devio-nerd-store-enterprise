@@ -30,9 +30,9 @@ services:
     build:
       context: ../src
       dockerfile: ./web/NSE.WebApp.MVC/Dockerfile
-    restart: always
-    ports:
-      - "5001:5001"
+    #restart: always
+    #ports:
+      #- "5001:5001"
       #- "5001:80" Usando a porta do container exposta do Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -49,7 +49,7 @@ services:
     build:
       context: ../src
       dockerfile: ./services/NSE.Identidade.API/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7055
@@ -63,7 +63,7 @@ services:
     build:
       context: ../src
       dockerfile: ./services/NSE.Carrinho.API/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7072
@@ -78,7 +78,7 @@ services:
     build:
       context: ../src
       dockerfile: ./services/NSE.Catalogo.API/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7195
@@ -92,7 +92,7 @@ services:
     build:
       context: ../src
       dockerfile: ./services/NSE.Cliente.API/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7214
@@ -107,7 +107,7 @@ services:
     build:
       context: ../src
       dockerfile: ./api-gateways/NSE.Bff.Compras/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7084
@@ -124,7 +124,7 @@ services:
     build:
       context: ../src
       dockerfile: ./services/NSE.Pagamentos.API/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7121
@@ -140,7 +140,7 @@ services:
     build:
       context: ../src
       dockerfile: ./services/NSE.Pedidos.API/Dockerfile
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:7020
@@ -155,7 +155,7 @@ services:
     build:
       context: ./
       dockerfile: ./nginx/Dockerfile
-    restart: always
+    #restart: always
     ports:
       - "80:80"
       - "443:443"
