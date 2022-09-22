@@ -26,7 +26,7 @@ services:
 
   web-mvc:
     image: haraheique/nerdstore-web-mvc-ecommerce:latest
-    container_name: nerdstore-web-mvc-ecommerce
+    #container_name: nerdstore-web-mvc-ecommerce
     build:
       context: ../src
       dockerfile: ./web/NSE.WebApp.MVC/Dockerfile
@@ -37,6 +37,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://*:5001 # Estou falando que a aplicação vai rodar na porta 5001, não necessitando de usar mesma porta do container definida no Dockerfile
+    volumes:
+      - dpkeys:/var/data-protection-keys/ # Usando named volume para mapear as chaves e compartilhar ela entre todas as instâncias ao aplicar load balance (todas chaves conterão mesmo nome)
     depends_on:
       - api-catalogo
       - api-identidade
@@ -56,7 +58,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx # expondo para o kestrel que ele tem certificado
     volumes:
-      - ./certs:/https:ro # mapeando certificado para o container no local https remote origin
+      - ./certs:/https:ro # usando bind mount volume para mapear certificado para o container no diretório https remote origin
     depends_on:
       - rabbitmq
       - sql-server
@@ -189,3 +191,7 @@ services:
       - "443:443"
     depends_on:
       - web-mvc
+
+# volume nomeado criado que vai conter a chave compartilha para as N instancias do WebApp MVC
+volumes:
+  dpkeys:
