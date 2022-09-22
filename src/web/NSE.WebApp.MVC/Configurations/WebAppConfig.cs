@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,14 @@ namespace NSE.WebApp.MVC.Configurations
         {
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
+
+            // Essa configuração é para ser utilizada junto com uso do load balance usando ngnix
+            // ASP.NET gera uma chave única para que a aplicação tenha uma criptografia própria para que valide os tokens e afins
+            // Com isso cada instancia vai gerar sua chave, mas como todas possuem um mesmo nome (ApplicationName) acaba que usam o mesmo padrão de chave
+            // Para que os containers (N instancias) compartilhem das mesmas chaves é usado um volume nomeado compartilhado entre eles
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo("/var/data-protection-keys/"))
+                .SetApplicationName("NerdStoreEnterprise");
 
             // Configuração dos header de forward para usar junto ao nginx e a aplicação entender que está sendo usado um proxy reverso
             // XForwardedFor: mantém os dados do chamador original, ou seja, o client
