@@ -52,7 +52,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7055
+      - ASPNETCORE_URLS=https://+:7055;http://+7056
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx # expondo para o kestrel que ele tem certificado
+    volumes:
+      - ./certs:/https:ro # mapeando certificado para o container no local https remote origin
     depends_on:
       - rabbitmq
       - sql-server
@@ -66,7 +70,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7072
+      - ASPNETCORE_URLS=https://+:7072;http://+7073
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx
+    volumes:
+      - ./certs:/https:ro
     depends_on:
       - rabbitmq
       - sql-server
@@ -81,7 +89,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7195
+      - ASPNETCORE_URLS=https://+:7195;http://+7196
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx
+    volumes:
+      - ./certs:/https:ro
     depends_on:
       - rabbitmq
       - sql-server
@@ -95,7 +107,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7214
+      - ASPNETCORE_URLS=https://+:7214;http://+7215
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx
+    volumes:
+      - ./certs:/https:ro
     depends_on:
       - rabbitmq
       - sql-server
@@ -110,7 +126,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7084
+      - ASPNETCORE_URLS=https://+:7084;http://+7085
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx
+    volumes:
+      - ./certs:/https:ro
     depends_on:
       - rabbitmq
       - api-identidade
@@ -127,7 +147,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7121
+      - ASPNETCORE_URLS=https://+:7121;http://+7122
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx
+    volumes:
+      - ./certs:/https:ro
     depends_on:
       - rabbitmq
       - api-identidade
@@ -143,7 +167,11 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://*:7020
+      - ASPNETCORE_URLS=https://+:7020;http://+7021
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=nerdstore
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/nerdstore-certificate.pfx
+    volumes:
+      - ./certs:/https:ro
     depends_on:
       - rabbitmq
       - sql-server
