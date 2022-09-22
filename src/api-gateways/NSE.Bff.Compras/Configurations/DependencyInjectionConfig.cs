@@ -1,5 +1,6 @@
 ﻿using NSE.Bff.Compras.Services;
 using NSE.Bff.Compras.Services.Interfaces;
+using NSE.WebAPI.Core.Extensions;
 using NSE.WebAPI.Core.Usuario;
 using NSE.WebApp.MVC.DelegatingHandlers;
 using NSE.WebApp.MVC.Extensions;
@@ -25,26 +26,31 @@ namespace NSE.Bff.Compras.Configurations
 
             services.AddHttpClient<ICatalogoService, CatalogoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
 
             services.AddHttpClient<ICarrinhoService, CarrinhoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
-            
+
             services.AddHttpClient<IPedidoService, PedidoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
-            
+
             services.AddHttpClient<IClienteService, ClienteService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
-            
+
             services.AddHttpClient<IPagamentoService, PagamentoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
         }

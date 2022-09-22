@@ -1,5 +1,6 @@
 ﻿using NSE.Bff.Compras.Services.gRPC;
 using NSE.Carrinho.API.Services.gRPC;
+using NSE.WebAPI.Core.Extensions;
 
 namespace NSE.Bff.Compras.Configurations
 {
@@ -15,8 +16,8 @@ namespace NSE.Bff.Compras.Configurations
                 options.Address = new Uri(builder.Configuration["CarrinhoUrl"]);
                 //options.Address = new Uri(builder.Configuration.GetValue<string>("CarrinhoUrl"));
             })
-            .AddInterceptor<GrpcServiceInterceptor>();
-            //.AllowSelfSignedCertificate();
+            .AddInterceptor<GrpcServiceInterceptor>()
+            .AllowSelfSignedCertificate();
 
             return builder;
         }

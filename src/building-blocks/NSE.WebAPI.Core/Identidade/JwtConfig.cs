@@ -24,6 +24,10 @@ namespace NSE.WebAPI.Core.Identidade
                 //x.RequireHttpsMetadata = true;
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
+                
+                // Fazer um bypass nos certificados que não reconhece como válidos (certificados self signed locais gerados rodados pelo docker-compose)
+                x.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } }; 
+                
                 x.SetJwksOptions(new JwkOptions(appSettings.AutenticacaoJwksUrl));
             });
 

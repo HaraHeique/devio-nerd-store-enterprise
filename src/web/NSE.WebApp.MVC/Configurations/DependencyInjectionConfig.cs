@@ -28,21 +28,25 @@ namespace NSE.WebApp.MVC.Configurations
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
 
             services.AddHttpClient<ICatalogoService, CatalogoService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
 
             services.AddHttpClient<IClienteService, ClienteService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
 
             services.AddHttpClient<IComprasBffService, ComprasBffService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AllowSelfSignedCertificate()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(PollyExtensions.QuebrarCircuito());
         }
