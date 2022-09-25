@@ -69,6 +69,8 @@ A execução pelo Docker, mais especificamente pelo [Docker Compose](https://doc
     docker-compose -f nerdstore-producao.yml down
     ```
 
+**OBS.:** pode ocorrer de ao rodar pelo Docker através do docker-compose as API's subam primeiro do que o broker de mensagens (Event Bus). Isso acaba levando nas API's não se conectarem broker de mensagens e ocasionar inconsistências na aplicação. Caso isto ocorra basta restartar as instâncias dos containers de todas as API's manualmente pelo Docker e voltará a funcionar corretamente.
+
 <hr>
 
 ## Referências
