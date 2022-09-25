@@ -16,6 +16,8 @@ Esta aplicação **não possui uma arquitetura em microserviços, e sim baseada 
 
 > *"Usar aplicações em microservices são para poucos cenários, onde são necessários extremamente de atualizações e escalabilidade (a cada pouco tempo tem que subir novidades tendo milhares/milhões de usuários), como por exemplo em aplicações como: Netflix, Uber, Amazon e afins. Agora em cenários de aplicações corporativas em qualquer tipo de setor comercial/industrial pode ser muito bem entregue no modelo com arquitetura distribuída. E caso evolua muito a aplicação este modelo está a poucos passos de se tornar um microserviço."*
 
+Dessa forma, utilizarmos uma arquitetura em microserviços dependendo da complexidade do negócio pode ser uma *"bazuca para matar uma barata"*.
+
 <hr>
 
 ## Como executar?
@@ -28,12 +30,16 @@ Para executar no Visual Studio, basta seguir os seguinte passos:
 
 - Instalar as seguintes ferramentas: .Net 6, SQL Server (preferencialmente com o SSMS) e Docker;
 - Criar uma instância do RabbitMQ a partir de um container docker por meio do seguinte comando:
-  
-    > docker run -d --hostname rabbit-host --name rabbit-nerdstore -p 15672:15672 -p 5672:5672 rabbitmq:3-management-alpine
+
+    ```
+    docker run -d --hostname rabbit-host --name rabbit-nerdstore -p 15672:15672 -p 5672:5672 rabbitmq:3-management-alpine
+    ```
 
 - Para criação da base de dados existem duas maneiras. Uma delas é executar o script chamado *BackupDbScript.sql* presente no diretório */sql* no banco de dados. Outra forma é rodar as *migrations* presentes no código fonte em cada um dos projetos através do [*PMC (Package Manager Console)*](https://www.learnentityframeworkcore.com/migrations/commands/pmc-commands) do Visual Studio. Caso escolha a segunda maneira basta rodar o seguinte comando em cada projeto no *PMC*:
 
-    > Update-Database -Context {nome_contexto} -StartupProject {nome_projeto_startup}
+    ```
+    Update-Database -Context {nome_contexto} -StartupProject {nome_projeto_startup}
+    ```
 
 - Coloque todos os projetos para rodar no modelo *SelfHosting* ao invés do *IIS*, pois todas URL's/endpoints configurados estão usando as configurações de *SelfHosting* presentes no *launchSettings.json*;
 - Configurar a solution da aplicação no Visual Studio para iniciar vários projetos, exatamente com os mesmos projetos mostrados na figura abaixo:
@@ -51,13 +57,17 @@ A execução pelo Docker, mais especificamente pelo [Docker Compose](https://doc
 - Obviamente, instalar o Docker habilitando o WSL2 e virtualização, principalmente se estiver no SO Windows;
 - Abra o terminal no diretório */deploy* e execute o seguinte comando:
 
-    > docker-compose -f nerdstore-producao.yml up --build
+    ```
+    docker-compose -f nerdstore-producao.yml up --build
+    ```
 
     **OBS.:** *--build* é uma flag opcional que força a criação de todas as imagens docker.
 
 - Para remover todos os containers docker gerados a partir das imagens docker basta usar o seguinte comando:
 
-    > docker-compose -f nerdstore-producao.yml down
+    ```
+    docker-compose -f nerdstore-producao.yml down
+    ```
 
 <hr>
 
